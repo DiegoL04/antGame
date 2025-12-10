@@ -1,0 +1,78 @@
+[gd_scene load_steps=12 format=3 uid="uid://c3nbqofblpkr"]
+
+[ext_resource type="Script" uid="uid://devlox4uk5wvj" path="res://Scenes/main.gd" id="1_6bp64"]
+[ext_resource type="Script" uid="uid://cl5omls8d5chd" path="res://Scripts/player_anthill.gd" id="2_kry3j"]
+[ext_resource type="Texture2D" uid="uid://dmymkobioes1l" path="res://Assets/bg.png" id="2_ynf5e"]
+[ext_resource type="Script" uid="uid://cf6clmynb2xp4" path="res://Scripts/ant_spawner.gd" id="4_6bp64"]
+[ext_resource type="Texture2D" uid="uid://dkg2lfx7bwb68" path="res://Assets/anthill.png" id="4_hptm8"]
+[ext_resource type="Script" uid="uid://di43sbogcxnqb" path="res://Scripts/camera.gd" id="4_jjvhh"]
+[ext_resource type="PackedScene" uid="uid://b8jiff0bef3c4" path="res://Scenes/ui.tscn" id="6_21xkr"]
+[ext_resource type="Texture2D" uid="uid://dfs137uxgcmaj" path="res://Assets/enemyanthill.png" id="6_d1ilt"]
+[ext_resource type="PackedScene" uid="uid://bhl7y0444jgvj" path="res://Scenes/game_over_screen.tscn" id="8_344ge"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d5x1h"]
+radius = 122.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kry3j"]
+radius = 400.0
+
+[node name="main" type="Node2D"]
+script = ExtResource("1_6bp64")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1921, 100)
+texture = ExtResource("2_ynf5e")
+
+[node name="PlayerAnthill" type="Node2D" parent="."]
+position = Vector2(300, 900)
+
+[node name="PlayerAnthill" type="StaticBody2D" parent="PlayerAnthill"]
+script = ExtResource("2_kry3j")
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerAnthill/PlayerAnthill"]
+position = Vector2(0, -100)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("4_hptm8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAnthill/PlayerAnthill"]
+shape = SubResource("CircleShape2D_d5x1h")
+
+[node name="WeaponRange" type="Area2D" parent="PlayerAnthill/PlayerAnthill"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAnthill/PlayerAnthill/WeaponRange"]
+shape = SubResource("CircleShape2D_kry3j")
+
+[node name="AntSpawner" type="Node2D" parent="PlayerAnthill"]
+script = ExtResource("4_6bp64")
+spawn_interval = 5.0
+
+[node name="EnemyAnthill" type="Node2D" parent="."]
+position = Vector2(3400, 900)
+
+[node name="EnemyAnthill" type="StaticBody2D" parent="EnemyAnthill"]
+script = ExtResource("2_kry3j")
+team = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyAnthill/EnemyAnthill"]
+position = Vector2(0, -100)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("6_d1ilt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyAnthill/EnemyAnthill"]
+shape = SubResource("CircleShape2D_d5x1h")
+
+[node name="WeaponRange" type="Area2D" parent="EnemyAnthill/EnemyAnthill"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyAnthill/EnemyAnthill/WeaponRange"]
+shape = SubResource("CircleShape2D_kry3j")
+
+[node name="AntSpawner" type="Node2D" parent="EnemyAnthill"]
+script = ExtResource("4_6bp64")
+team = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("4_jjvhh")
+
+[node name="UI" parent="." instance=ExtResource("6_21xkr")]
+
+[node name="GameOver" parent="." instance=ExtResource("8_344ge")]
